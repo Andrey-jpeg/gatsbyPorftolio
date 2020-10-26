@@ -17,6 +17,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         ) {
           nodes {
             id
+            frontmatter {
+              template
+            }
             fields {
               slug
             }
@@ -47,7 +50,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
       createPage({
         path: post.fields.slug,
-        component: blogPost,
+        component: path.resolve(
+          `./src/templates/${post.frontmatter.template}.js`
+        ),
         context: {
           id: post.id,
           previousPostId,
