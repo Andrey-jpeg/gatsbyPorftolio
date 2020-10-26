@@ -1,6 +1,6 @@
 ---
 title: test project
 description: what I am currently working on
-isProject: true
+template: project
 ---
 this is my current big project!
