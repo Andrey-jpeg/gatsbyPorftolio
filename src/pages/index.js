@@ -45,14 +45,14 @@ const BlogIndex = ({ data, location }) => {
                   <Link to={post.fields.slug} itemProp="url">
                     <small>
                       <p>
-                        Læs mere her:
+                        Læs mere her
                       </p>
                     </small>
                   </Link>
                 </div>
-                <Link to={post.fields.slug} itemProp="url">
+                <div className="imageContainer">
                   <Img style={{}} fixed={post.frontmatter.image.childImageSharp.fixed} alt="" />
-                </Link>
+                </div>
               </article>
             </li>
           )
