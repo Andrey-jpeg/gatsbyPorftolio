@@ -1,7 +1,17 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `Portfolio`,
     description: `A starter blog demonstrating what Gatsby can do.`,
+    menuLinks:[
+      {
+        name:'home',
+        link: '/'
+      },
+      {
+        name:'about',
+        link:'/about'
+      }
+    ]
   },
   plugins: [
     {

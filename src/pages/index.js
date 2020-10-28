@@ -1,27 +1,12 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
-
-
+import Img from "gatsby-image"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMarkdownRemark.nodes
-
-  if (posts.length === 0) {
-    return (
-      <Layout location={location} title={siteTitle}>
-        <SEO title="All posts" />
-
-        <p>
-          No blog posts found. Add markdown posts to "content/blog" (or the
-          directory you specified for the "gatsby-source-filesystem" plugin in
-          gatsby-config.js).
-        </p>
-      </Layout>
-    )
-  }
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -30,6 +15,7 @@ const BlogIndex = ({ data, location }) => {
       <ol style={{ listStyle: `none` }}>
         {posts.map(post => {
           const title = post.frontmatter.title || post.fields.slug
+          console.log(post)
 
           return (
             <li key={post.fields.slug}>
@@ -37,23 +23,36 @@ const BlogIndex = ({ data, location }) => {
                 className="post-list-item"
                 itemScope
                 itemType="http://schema.org/Article"
+                style={{display: 'flex', justifyContent: 'space-between'}}
               >
-                <header>
-                  <h2>
-                    <Link to={post.fields.slug} itemProp="url">
-                      <span itemProp="headline">{title}</span>
-                    </Link>
-                  </h2>
-                  <small>{post.frontmatter.date}</small>
-                </header>
-                <section>
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: post.frontmatter.description || post.excerpt,
-                    }}
-                    itemProp="description"
-                  />
-                </section>
+                <div className="contentContainer" style={{maxWidth: '70%'}}>
+                  <header>
+                    <h2>
+                      <Link to={post.fields.slug} itemProp="url">
+                        <span itemProp="headline">{title}</span>
+                      </Link>
+                    </h2>
+                    <small>{post.frontmatter.date}</small>
+                  </header>
+                  <section>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: post.frontmatter.description || post.excerpt,
+                      }}
+                      itemProp="description"
+                    />
+                  </section>
+                  <Link to={post.fields.slug} itemProp="url">
+                    <small>
+                      <p>
+                        Læs mere her:
+                      </p>
+                    </small>
+                  </Link>
+                </div>
+                <Link to={post.fields.slug} itemProp="url">
+                  <Img style={{}} fixed={post.frontmatter.image.childImageSharp.fixed} alt="" />
+                </Link>
               </article>
             </li>
           )
@@ -70,8 +69,8 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        }
       }
-    }
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
       nodes {
         excerpt
@@ -82,6 +81,16 @@ export const pageQuery = graphql`
           date(formatString: "MMMM DD, YYYY")
           title
           description
+          image {
+            childImageSharp {
+              fixed {
+                ...GatsbyImageSharpFixed
+              }
+              fluid {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
         }
       }
     }
